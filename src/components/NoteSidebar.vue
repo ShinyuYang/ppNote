@@ -26,10 +26,7 @@
 </template>
 
 <script>
-import Notebooks from '../apis/notebooks';
-import Notes from '../apis/notes';
-import Bus from '../helpers/bus';
-import { mapState,mapActions,mapGetters ,mapMutations} from 'vuex'
+import { mapActions,mapGetters ,mapMutations} from 'vuex'
 
 export default {
   created() {
@@ -39,9 +36,16 @@ export default {
         return this.getNotes({ notebookId: this.curBook.id})
       }).then(() => {
         this.setCurNote({ curNoteId: this.$route.query.noteId })
+        this.$router.replace({
+          path:'/note',
+          query:{
+            noteId:this.curNote.id,
+            notebookId:this.curBook.id
+          }
+        })
     })
   },
-  props:['curNote'],
+  // props:['curNote'],
   data(){
     return {}
   },
@@ -51,6 +55,7 @@ export default {
       'notes',
       'curBook',
       //用getters而不直接用state的好处:可以直接使用getters里面的东西(不用写在哪个模块下modules)
+      'curNote'
     ])
   },
   methods:{
@@ -71,6 +76,16 @@ export default {
        this.$store.commit('setCurBook',{curBookId:notebookId})
       // 寻找与所点击按钮对应的
       this.getNotes({ notebookId })
+         .then(() => {
+        this.setCurNote({})
+        this.$router.replace({
+          path:'/note',
+          query:{
+            noteId:this.curNote.id,
+            notebookId:this.curBook.id
+          }
+        })
+      })
     },
     onAddNote(){
       this.addNote({notebookId: this.curBook.id})

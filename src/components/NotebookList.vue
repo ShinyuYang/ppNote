@@ -14,7 +14,7 @@
               <span class="action" @click.stop.prevent="onEdit(notebook)" >编辑</span>
 <!--              括号内的是限定编辑范围-->
               <span class="action" @click.stop.prevent="onDelete(notebook)">删除</span>
-              <span class="date">{{notebook.friendlyCreatedAt}}</span>
+              <span class="date">{{notebook.createdAtFriendly}}</span>
             </div>
           </router-link>
         </div>
@@ -26,10 +26,8 @@
 </template>
 
 <script>
-import Auth from '../apis/auth';
-import Notebooks from '../apis/notebooks';
-import {friendlyDate} from '../helpers/util';
-import { mapState,mapActions,mapGetters } from 'vuex'
+
+import { mapActions,mapGetters } from 'vuex'
 
 
 export default{
@@ -37,17 +35,8 @@ export default{
     return{}
   },
   created() {
-    Auth.getInfo()
-      .then(res=>{
-        if(!res.isLogin){
-          this.$router.push({path:'/login'})
-        }
-      })
-   this.$store.dispatch('getNotebooks')
-// Notebooks.getAll()
-//     .then(res=>{
-//       this.notebooks=res.data
-//     })
+    this.checkLogin({path:'/login'})
+   this.getNotebooks()
   },
   computed:{
     ...mapGetters(['notebooks'])
@@ -57,7 +46,8 @@ export default{
       'getNotebooks',
       'addNotebook',
       'updateNotebook',
-      'deleteNotebook'
+      'deleteNotebook',
+      'checkLogin'
     ]),
     onCreate(){
       this.$prompt('输入新笔记本标题', '创建笔记本', {

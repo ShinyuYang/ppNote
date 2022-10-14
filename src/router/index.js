@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import Login from '../components/Login';
-import Notebooks from '../components/NotebookList.vue';
-import NoteDetail from '../components/NoteDetail.vue';
-import TrashDetail from '../components/TrashDetail.vue';
+
+
+// 解决vue-router在3.0版本以上重复点报错问题
+const VueRouterPush = Router.prototype.push
+Router.prototype.push = function push (to) {
+  return VueRouterPush.call(this, to).catch(err => err)
+}
 
 Vue.use(Router)
 
@@ -12,26 +14,20 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      alias:'/notebooks',
+      component: () => import('../components/NotebookList.vue')
     },
     {
       path: '/login',
-      name: 'Login',
-      component: Login
-    },
-    {
-      path: '/notebooks',
-      name:'Notebooks',
-      component: Notebooks
+      component: () => import('../components/Login.vue')
     },
     {
       path: '/note',
-      component: NoteDetail
+      component:() => import('../components/NoteDetail.vue')
     },
     {
       path: '/trash',
-      component: TrashDetail
+      component: () => import('../components/TrashDetail.vue')
     },
   ]
 })

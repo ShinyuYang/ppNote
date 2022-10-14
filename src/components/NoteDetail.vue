@@ -15,7 +15,8 @@
           <input type="text" v-model:value="curNote.title" @input="onUpdateNote" @keydown="statusText='正在输入...'" placeholder="输入标题">
         </div>
         <div class="editor">
-          <textarea v-show="!isShowPreview" v-model:value="curNote.content" @input="onUpdateNote"  @keydown="statusText='正在输入...'" placeholder="输入内容, 支持 markdown 语法"></textarea>
+          <codemirror v-model="curNote.content" :options="cmOptions" v-show="!isShowPreview" @input="onUpdateNote" @inputRead="statusText='正在输入...'"></codemirror>
+<!--          <textarea v-show="!isShowPreview" v-model:value="curNote.content" @input="onUpdateNote"  @keydown="statusText='正在输入...'" placeholder="输入内容, 支持 markdown 语法"></textarea>-->
           <div class="preview markdown-body" v-html="previewContent" v-show="isShowPreview"></div>
         </div>
       </div>
@@ -26,32 +27,38 @@
 
 <script >
 
-import Auth from '../apis/auth';
 import NoteSidebar from './NoteSidebar';
 import _ from 'lodash'
 import MarkdownIt from 'markdown-it'
 import { mapActions,mapGetters ,mapMutations} from 'vuex'
+import { codemirror } from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/mode/markdown/markdown.js'
+import 'codemirror/theme/neat.css'
 
 let md=new MarkdownIt()
 
 export default{
   name:'Login',
   components:{
-    NoteSidebar
+    NoteSidebar,
+    codemirror
   },
   data(){
     return{
       statusText:'笔记未修改',
-      isShowPreview:false
+      isShowPreview:false,
+      cmOptions:{
+        tabSize: 4,
+        mode: 'text/x-markdown',
+        theme: 'neat',
+        lineNumbers: false,
+        line: true
+      }
     }
   },
   created() {
-    Auth.getInfo()
-      .then(res=>{
-        if(!res.isLogin){
-          this.$router.push({path:'/login'})
-        }
-      })
+    this.checkLogin({path:'/login'})
   },
   computed:{
     ...mapGetters([
@@ -68,9 +75,11 @@ export default{
     ]),
     ...mapActions([
       'updateNote',
-      'deleteNote'
+      'deleteNote',
+      'checkLogin'
     ]),
     onUpdateNote:_.debounce(function(){
+      if(!this.curNote.id) return
       this.updateNote({noteId:this.curNote.id, title:this.curNote.title
         ,content:this.curNote.content})
       .then(data=>{

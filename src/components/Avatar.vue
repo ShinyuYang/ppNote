@@ -4,30 +4,27 @@
 </template>
 
 <script>
-import Auth from '../apis/auth.js';
-import Bus from '../helpers/bus.js';
+import {mapGetters,mapActions} from 'vuex';
 
 export default {
   data() {
-    return {
-      username: '未登录'
-    }
+    return {}
   },
   created() {
-    Bus.$on('userInfo',user=>{
-      this.username=user.username
-    })
     //用于监听登录成功之后的信息展示
-
-    Auth.getInfo()
-      .then(res => {
-        if(res.isLogin){
-          this.username=res.data.username
-        }
-      })
+    this.checkLogin()
     //用于在任何界面处于登录状态时的信息展示
   },
+  methods:{
+    ...mapActions([
+      'checkLogin'
+    ])
+  },
   computed: {
+    ...mapGetters([
+      'username',
+      'slug'
+    ]),
     slug() {
       return this.username.charAt(0)
     }

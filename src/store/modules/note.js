@@ -9,9 +9,9 @@ const state={
 const getters={
   notes: state=>state.notes||[],
   curNote: state=>{
-    if(!Array.isArray(state.notes))return{}
-    if(!state.curNoteId)return state.notes[0]
-    return state.notes.find(note=>note.id==state.curNoteId)||{}
+    if(!Array.isArray(state.notes))return{title:'',content:''}
+    if(!state.curNoteId)return state.notes[0] ||{title:'',content:''}
+    return state.notes.find(note=>note.id==state.curNoteId)||{title:'',content:''}
   }
 }
 
@@ -55,10 +55,10 @@ const actions={
         commit('updateNote',{noteId,title,content})
       })
   },
-  deleteNote({commit}, noteId) {
-    return Note.deleteNote({noteId})
+  deleteNote({ commit },{ noteId }) {
+    return Note.deleteNote({ noteId })
       .then(res=>{
-        commit('deleteNote',{noteId})
+        commit('deleteNote',{ noteId })
         Message.success(res.msg)
       })
   }

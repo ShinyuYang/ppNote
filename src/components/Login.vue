@@ -32,17 +32,8 @@
 
 <script>
 
-import Auth from '../apis/auth';
-import Bus from '../helpers/bus';
 
-// Auth.getInfo().then(data=>{
-//   console.log(data)
-// })
-
-// request('/auth')
-//   .then(data=>{
-//     console.log(data)
-//   })
+import {mapActions} from 'vuex';
 
 export default {
   name: 'Login',
@@ -65,6 +56,11 @@ export default {
     }
   },
   methods:{
+    ...mapActions({
+      loginUser:'login',
+      registerUser:'register'
+    }),
+
     showRegister(){
       this.isShowRegister=true;
       this.isShowLogin=false;
@@ -84,13 +80,12 @@ export default {
         this.register.notice = '密码长度为6~16个字符'
         return
       }
-      Auth.register( {
+      this.registerUser( {
         username:this.register.username,
         password:this.register.password
-      }).then (data=>{
+      }).then (()=>{
         this.register.isError = false
         this.register.notice = ''
-        Bus.$emit('userInfo',{ username:this.register.username})
         this.$router.push({path:'/notebooks'})
         }).catch(data=>{
           this.register.isError= true
@@ -108,13 +103,12 @@ export default {
         this.login.notice = '密码长度为6~16个字符'
         return
       }
-      Auth.login( {
+      this.loginUser( {
         username:this.login.username,
         password:this.login.password
-      }).then (data => {
+      }).then (() => {
         this.login.isError = false
         this.login.notice = ''
-        Bus.$emit('userInfo',{ username:this.login.username})
         this.$router.push({path:'/notebooks'})
       }).catch(data=>{
         this.login.isError = true
