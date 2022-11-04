@@ -17,7 +17,6 @@ const actions={
     login({commit},{username,password}){
       return  Auth.login({username,password})
         .then(res=>{
-          console.log(res)
           commit('setUser',{user:res.data})
         })
     },
