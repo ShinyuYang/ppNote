@@ -1,9 +1,11 @@
 <template>
   <div id="login">
+    <div id="preloader"/>
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
         <div class="main"></div>
+
         <div class="form">
           <h3 @click="showRegister">创建账户</h3>
           <transition name="slide">
@@ -34,11 +36,14 @@
 
 
 import {mapActions} from 'vuex';
+import picture from "../assets/picture.png"
+
 
 export default {
   name: 'Login',
   data () {
     return {
+      picture,
       isShowLogin:true,
       isShowRegister:false,
       login:{
@@ -120,6 +125,13 @@ export default {
 </script>
 
 <style lang="less">
+#preloader {
+  /* Images you want to preload*/
+  background-image: url("../assets/picture.png");
+  width: 0;
+  height: 0;
+  display: inline;
+}
 .modal-mask {
   position: fixed;
   z-index: 100;
@@ -136,7 +148,8 @@ export default {
   display: table-cell;
   vertical-align: middle;
 }
-.modal-container {width: 800px;
+.modal-container {
+  width: 800px;
   height: 500px;
   margin: 0 auto;
   background-color: #fff;
@@ -148,9 +161,9 @@ export default {
 
   .main {
     flex: 1;
-    background: #4E6EF2
-    url(//cloud.hunger-valley.com/17-12-13/38476998.jpg-middle) center center no-repeat;
-    background-size: contain;}
+    background: #4E6EF2 url("../assets/picture.png") center center no-repeat;
+    background-size: contain;
+  }
 }
 
   .form {
