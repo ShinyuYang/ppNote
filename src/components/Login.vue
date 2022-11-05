@@ -5,7 +5,6 @@
       <div class="modal-wrapper">
         <div class="modal-container">
         <div class="main"></div>
-
         <div class="form">
           <h3 @click="showRegister">创建账户</h3>
           <transition name="slide">
@@ -127,7 +126,7 @@ export default {
 <style lang="less">
 #preloader {
   /* Images you want to preload*/
-  background-image: url("../assets/picture.png");
+  background-image: url("//static.xiedaimala.com/xdml/image/c366f47b-1cf3-479a-b486-140ff577dcc8/MjAyMi0xMS01LTEyLTQxLTktMTMy.png");
   width: 0;
   height: 0;
   display: inline;
@@ -161,7 +160,7 @@ export default {
 
   .main {
     flex: 1;
-    background: #4E6EF2 url("../assets/picture.png") center center no-repeat;
+    background: #4E6EF2 url("//static.xiedaimala.com/xdml/image/c366f47b-1cf3-479a-b486-140ff577dcc8/MjAyMi0xMS01LTEyLTQxLTktMTMy.png") center center no-repeat;
     background-size: contain;
   }
 }
