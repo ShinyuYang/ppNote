@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <div id="preloader"/>
+<!--    <div id="preloader"/>-->
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
@@ -124,13 +124,13 @@ export default {
 </script>
 
 <style lang="less">
-#preloader {
-  /* Images you want to preload*/
-  background-image: url("//static.xiedaimala.com/xdml/image/c366f47b-1cf3-479a-b486-140ff577dcc8/MjAyMi0xMS01LTEyLTQxLTktMTMy.png");
-  width: 0;
-  height: 0;
-  display: inline;
-}
+//#preloader {
+//  /* Images you want to preload*/
+//  background-image: url("//static.xiedaimala.com/xdml/image/c366f47b-1cf3-479a-b486-140ff577dcc8/MjAyMi0xMS01LTEyLTQxLTktMTMy.png");
+//  width: 0;
+//  height: 0;
+//  display: inline;
+//}
 .modal-mask {
   position: fixed;
   z-index: 100;
